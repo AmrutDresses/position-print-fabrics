@@ -9,6 +9,27 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
   <style>
+.page-header {
+  text-align: center;
+  font-weight: 900;
+  font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 2.8rem;
+  background: linear-gradient(45deg, #ff0066, #ffcc00, #00ccff, #ff0066);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: vibrantGlow 3s ease-in-out infinite alternate;
+  margin-bottom: 15px;
+}
+
+@keyframes vibrantGlow {
+  0% {
+    filter: drop-shadow(0 0 5px #ff0066);
+  }
+  100% {
+    filter: drop-shadow(0 0 20px #00ccff);
+  }
+}
+
     body {
       font-family: sans-serif;
       background: #f9f9f9;
@@ -165,6 +186,7 @@
 </head>
 
 <body>
+<header class="page-header">Amrut Dresses</header>
 
   <header>
     <div class="social-icons">
