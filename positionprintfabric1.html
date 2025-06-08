@@ -1,30 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org/",
-  "@type": "Product",
-  "name": "Pure Natural Crepe Fabric with Position Print Embroidery",
-  "image": "https://amrutdresses.github.io/position-print-fabrics/A11111490%20pure%20natural%20crepe%20position%20prit%20fabric%2044in%201.jpg",
-  "description": "High quality pure natural crepe fabric with exquisite position print embroidery work, perfect for boutiques.",
-  "sku": "A11111490",
-  "brand": {
-    "@type": "Brand",
-    "name": "Amrut Dresses"
-  },
-  "offers": {
-    "@type": "Offer",
-    "url": "https://amrutdresses.github.io/position-print-fabrics/positionprintfabric1.html",
-    "priceCurrency": "INR",
-    "price": "600",
-    "priceValidUntil": "2025-12-31",
-    "availability": "https://schema.org/InStock",
-    "itemCondition": "https://schema.org/NewCondition"
-  }
-}
-</script>
-
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Fabric Quantity Discount Calculator</title>
@@ -59,32 +35,28 @@
     font-weight: bold; font-size: 16px; margin-top: 10px;
   }
   a.pay-btn:hover { background-color: #45a049; }
-  .image-container {
-    max-width: 400px;
-    margin: 0 auto 20px auto;
-    text-align: center;
+  .product-title {
+    font-size: 24px; font-weight: 700; text-align: center; margin-bottom: 10px;
   }
-  .image-title {
-    font-size: 22px;
-    font-weight: 700;
-    margin-bottom: 10px;
-    color: #222;
+  .product-description {
+    font-size: 14px; color: #555; text-align: center; margin: 10px 0 20px 0;
   }
-  .image-description {
-    font-size: 14px;
-    color: #555;
-    margin-top: 8px;
-    margin-bottom: 20px;
+  img.product-image {
+    max-width: 100%; height: auto; display: block; margin: 0 auto 10px auto;
   }
 </style>
 </head>
 <body>
 
-<div class="image-container">
-  <div class="image-title">Pure Natural Crepe Fabric with Position Print Embroidery</div>
-  <img src="A11111490%20pure%20natural%20crepe%20position%20prit%20fabric%2044in%201.jpg" alt="Pure Natural Crepe Position Print Fabric" style="max-width:100%; height:auto;">
-  <div class="image-description">High quality pure natural crepe fabric with exquisite position print embroidery work, perfect for boutiques.</div>
-</div>
+<h2 class="product-title">Pure Natural Crepe Fabric with Position Print Embroidery</h2>
+<img
+  class="product-image"
+  src="A11111490%20pure%20natural%20crepe%20position%20prit%20fabric%2044in%201.jpg"
+  alt="Pure Natural Crepe Position Print Fabric"
+/>
+<p class="product-description">
+  High quality pure natural crepe fabric with exquisite position print embroidery work, perfect for boutiques.
+</p>
 
 <div class="calculator">
   <h3>Quantity Discount Calculator</h3>
@@ -93,14 +65,7 @@
   </p>
 
   <label for="quantity">Quantity (in meters):</label>
-  <input
-    type="number"
-    id="quantity"
-    step="1"
-    min="1"
-    max="9"
-    value="1"
-  />
+  <input type="number" id="quantity" step="1" min="1" max="9" value="1" />
 
   <button id="calculateBtn" type="button">Calculate</button>
 
@@ -108,7 +73,7 @@
 </div>
 
 <script>
-  // Static product data variables (from your input)
+  // Product constants
   const purchase_rate = 500;
   const purchase_charges = 100;
   const weight = 0.2;
@@ -117,7 +82,7 @@
 
   const cost_per_item = purchase_rate + purchase_charges;
 
-  // Shipping ranges with added 0.2kg = 100 shipping cost
+  // Shipping cost based on total weight (kg)
   const ranges = [
     [25, 1980],[24.5,1650],[24,1650],[23.5,1320],[23,1320],[22.5,1650],[22,1590],
     [21.5,1540],[21,1490],[20.5,1440],[20,1400],[19.5,1320],[19,1320],[18.5,1320],
@@ -128,12 +93,11 @@
     [2.5,330],[2,270],[1.5,220],[1,170],[0.5,120],[0.2,100],[0,80]
   ];
 
-  // Updated profit array: first element 120 instead of 110
+  // Base profits for quantities 1 to 10
   const baseProfits = [120, 200, 270, 320, 350, 360, 385, 400, 405, 410];
 
-  // Modified getShipping to work descending
   function getShipping(weight) {
-    for (let i = ranges.length - 1; i >= 0; i--) {
+    for (let i = 0; i < ranges.length; i++) {
       if (weight >= ranges[i][0]) {
         return ranges[i][1];
       }
