@@ -35,28 +35,12 @@
     font-weight: bold; font-size: 16px; margin-top: 10px;
   }
   a.pay-btn:hover { background-color: #45a049; }
-  .product-title {
-    font-size: 24px; font-weight: 700; text-align: center; margin-bottom: 10px;
-  }
-  .product-description {
-    font-size: 14px; color: #555; text-align: center; margin: 10px 0 20px 0;
-  }
-  img.product-image {
-    max-width: 100%; height: auto; display: block; margin: 0 auto 10px auto;
-  }
 </style>
 </head>
 <body>
 
-<h2 class="product-title">Pure Natural Crepe Fabric with Position Print Embroidery</h2>
-<img
-  class="product-image"
-  src="A11111490%20pure%20natural%20crepe%20position%20prit%20fabric%2044in%201.jpg"
-  alt="Pure Natural Crepe Position Print Fabric"
-/>
-<p class="product-description">
-  High quality pure natural crepe fabric with exquisite position print embroidery work, perfect for boutiques.
-</p>
+<h2>Fabric Sample</h2>
+<img src="A11111490%20pure%20natural%20crepe%20position%20prit%20fabric%2044in%201.jpg" alt="Pure Natural Crepe Position Print Fabric" style="max-width:100%; height:auto;">
 
 <div class="calculator">
   <h3>Quantity Discount Calculator</h3>
@@ -73,59 +57,36 @@
 </div>
 
 <script>
-  // Product constants
-  const purchase_rate = 500;
-  const purchase_charges = 100;
-  const weight = 0.2;
+  // Static product data variables
+  const purchase_rate = 500;       // Base rate
+  const purchase_charges = 100;    // Additional charges
+  const weight = 0.2;              // Weight per meter (not used in shipping as per your logic)
   const stock = 9;
   const min_qty = 1;
 
-  const cost_per_item = purchase_rate + purchase_charges;
+  const cost_per_item = purchase_rate + purchase_charges; // 600
 
-  // Shipping cost based on total weight (kg)
-  const ranges = [
-    [25, 1980],[24.5,1650],[24,1650],[23.5,1320],[23,1320],[22.5,1650],[22,1590],
-    [21.5,1540],[21,1490],[20.5,1440],[20,1400],[19.5,1320],[19,1320],[18.5,1320],
-    [18,1320],[17.5,1320],[17,1260],[16.5,1210],[16,1160],[15.5,1110],[15,1070],
-    [14.5,990],[14,990],[13.5,990],[13,990],[12.5,990],[12,930],[11.5,880],[11,830],
-    [10.5,780],[10,740],[9.5,660],[9,660],[8.5,660],[8,660],[7.5,660],[7,600],
-    [6.5,550],[6,500],[5.5,450],[5,410],[4.5,330],[4,330],[3.5,440],[3,370],
-    [2.5,330],[2,270],[1.5,220],[1,170],[0.5,120],[0.2,100],[0,80]
-  ];
+  // Using fixed profit as 120 per your example
+  const fixed_profit = 120;
 
-  // Base profits for quantities 1 to 10
-  const baseProfits = [120, 200, 270, 320, 350, 360, 385, 400, 405, 410];
+  // Fixed shipping charge as 100 per your example
+  const fixed_shipping = 100;
 
-  function getShipping(weight) {
-    for (let i = 0; i < ranges.length; i++) {
-      if (weight >= ranges[i][0]) {
-        return ranges[i][1];
-      }
-    }
-    return 0;
-  }
-
-  function calculateTotal(cost, weightage, quantity) {
-    const totalWeight = quantity * weightage;
-    const basicCost = cost * quantity;
-    const shipping = getShipping(totalWeight);
-
-    let profit = 0;
-    if (quantity <= 10) {
-      profit = baseProfits[quantity - 1] || 0;
-    } else {
-      profit = 410 + (quantity - 10) * 5;
-    }
+  function calculateTotal(cost, quantity) {
+    const basicCost = cost * quantity; // cost * quantity
+    const profit = fixed_profit * quantity; // profit per meter * quantity
+    const shipping = fixed_shipping; // fixed shipping for all quantities
 
     const subtotal = basicCost + profit + shipping;
     const gst = subtotal * 0.05;
     const total = subtotal + gst;
-    const pricePerMeter = Math.ceil(total / quantity);
+
+    const pricePerMeter = total / quantity;
 
     return {
       total: total.toFixed(2),
-      pricePerMeter: pricePerMeter,
-      resultText: pricePerMeter + " ₹ per meter for " + quantity + " meter"
+      pricePerMeter: Math.ceil(pricePerMeter),
+      resultText: Math.ceil(pricePerMeter) + " ₹ per meter for " + quantity + " meter"
     };
   }
 
@@ -146,8 +107,10 @@
       return;
     }
 
-    const calc = calculateTotal(cost_per_item, weight, quantity);
-    const finalTotalAmount = calc.pricePerMeter * quantity;
+    const calc = calculateTotal(cost_per_item, quantity);
+
+    // Use total from calculation
+    const finalTotalAmount = calc.total;
 
     document.getElementById("result").innerHTML = `
       <p style="font-size: 18px; margin: 10px 0; color: #333;"><strong>${calc.resultText}</strong></p>
