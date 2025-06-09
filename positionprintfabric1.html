@@ -295,12 +295,18 @@
       resultDiv.innerHTML = "<p>" + resultText + "</p>";
     }
 
-    document.getElementById("calculateBtn").addEventListener("click", calculateShipping);
-  </script>
-
-  <p style="font-weight: bold; color: #555; margin-top: 20px;">Discount on 3 meters or more, Best price guaranteed.</p>
-
-  <a href="https://www.payumoney.com/paybypayumoney/#/5633E1121AA10A8A6574971BC42D7126" target="_blank" rel="noopener noreferrer" class="pay-btn">Buy Position Print Fabric Online</a>
+    document.getElementById("result").innerHTML = 
+                <strong style='font-size: 18px;'>${calc.resultText}</strong><br>
+                <strong style='font-size: 18px;'>Final Total: ₹${calc.total}</strong><br><br>
+                <input type='text' id='copyText' value='${calc.resultText} | Final Total: ₹${calc.total}' readonly
+                    style='width: 100%; font-weight: bold; text-align: center; padding: 5px;'><br><br>
+                <a href="https://amrutdresses.github.io/upi-payment-page/qrfixindex.html?amount=${calc.total}" 
+                   target="_blank" 
+                   style="display:inline-block; background-color:#4CAF50; color:white; padding:10px 20px; text-decoration:none; border-radius:5px; font-weight:bold;">
+                   Pay Now via UPI
+                </a>
+            ;
+        }
 
 </body>
 </html>
