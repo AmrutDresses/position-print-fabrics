@@ -266,8 +266,9 @@
 
     const subtotal = basicCost + profit + shipping;
     const gst = subtotal * 0.05;
-    const total = subtotal + gst;
-    const pricePerMeter = Math.ceil(total / quantity);
+    const totalRaw = subtotal + gst;
+    const pricePerMeter = Math.ceil(totalRaw / quantity);
+    const total = pricePerMeter * quantity;
 
     return {
       total: total.toFixed(2),
@@ -308,6 +309,7 @@
 
   document.getElementById("calculateBtn").addEventListener("click", calculateShipping);
 </script>
+
 
 </body>
 </html>
