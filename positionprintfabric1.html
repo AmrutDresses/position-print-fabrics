@@ -204,109 +204,110 @@
   <h2>Shop pure natural crepe fabric with beautiful position print embroidery. Perfect for stylish, breathable festive wear. Buy now for unmatched quality!</h2>
 
   <div class="calculator">
-    <h3>Quantity Discount Calculator</h3>
-    <p style="color: #555; font-size: 14px; margin-bottom: 15px;">
-      Increase Quantity For Better Rates.
-    </p>
+  <h3>Quantity Discount Calculator</h3>
+  <p style="color: #555; font-size: 14px; margin-bottom: 15px;">
+    Increase Quantity For Better Rates.
+  </p>
 
-    <label for="quantity">Quantity (in meters):</label>
-    <input type="number" id="quantity" step="1" min="1" max="9" value="1" />
+  <label for="quantity">Quantity (in meters):</label>
+  <input type="number" id="quantity" step="1" min="1" max="9" value="1" />
 
-    <button id="calculateBtn" type="button">Calculate</button>
+  <button id="calculateBtn" type="button">Calculate</button>
 
-    <div id="result"></div>
-  </div>
+  <div id="result"></div>
+</div>
 
-  <script>
-    const purchase_rate = 500;       // Base rate
-    const purchase_charges = 110;    // Additional charges
-    const weight_per_meter = 0.2;    // Weight per meter
-    const stock = 9;
-    const min_qty = 1;
+<script>
+  const purchase_rate = 500;       // Base rate
+  const purchase_charges = 110;    // Additional charges
+  const weight_per_meter = 0.2;    // Weight per meter
+  const stock = 9;
+  const min_qty = 1;
 
-    const cost_per_item = purchase_rate + purchase_charges; // 600
+  const cost_per_item = purchase_rate + purchase_charges; // 600
 
-    // Shipping ranges: [weight threshold, shipping cost]
-    const ranges = [
-      [25, 1980],[24.5,1650],[24,1650],[23.5,1320],[23,1320],[22.5,1650],[22,1590],
-      [21.5,1540],[21,1490],[20.5,1440],[20,1400],[19.5,1320],[19,1320],[18.5,1320],
-      [18,1320],[17.5,1320],[17,1260],[16.5,1210],[16,1160],[15.5,1110],[15,1070],
-      [14.5,990],[14,990],[13.5,990],[13,990],[12.5,990],[12,930],[11.5,880],[11,830],
-      [10.5,780],[10,740],[9.5,660],[9,660],[8.5,660],[8,660],[7.5,660],[7,600],
-      [6.5,550],[6,500],[5.5,450],[5,410],[4.5,330],[4,330],[3.5,440],[3,370],
-      [2.5,330],[2,270],[1.5,220],[1,170],[0.5,120],[0,80]
-    ];
+  // Shipping ranges: [weight threshold, shipping cost]
+  const ranges = [
+    [25, 1980],[24.5,1650],[24,1650],[23.5,1320],[23,1320],[22.5,1650],[22,1590],
+    [21.5,1540],[21,1490],[20.5,1440],[20,1400],[19.5,1320],[19,1320],[18.5,1320],
+    [18,1320],[17.5,1320],[17,1260],[16.5,1210],[16,1160],[15.5,1110],[15,1070],
+    [14.5,990],[14,990],[13.5,990],[13,990],[12.5,990],[12,930],[11.5,880],[11,830],
+    [10.5,780],[10,740],[9.5,660],[9,660],[8.5,660],[8,660],[7.5,660],[7,600],
+    [6.5,550],[6,500],[5.5,450],[5,410],[4.5,330],[4,330],[3.5,440],[3,370],
+    [2.5,330],[2,270],[1.5,220],[1,170],[0.5,120],[0,80]
+  ];
 
-    // Profit array for quantity 1 to 10
-    const baseProfits = [110, 200, 270, 320, 350, 360, 385, 400, 405, 410];
+  // Profit array for quantity 1 to 10
+  const baseProfits = [110, 200, 270, 320, 350, 360, 385, 400, 405, 410];
 
-    // Calculate shipping cost based on total weight
-    function getShipping(totalWeight) {
-      for (let i = 0; i < ranges.length; i++) {
-        if (totalWeight > ranges[i][0]) {
-          return ranges[i][1];
-        }
+  // Calculate shipping cost based on total weight
+  function getShipping(totalWeight) {
+    for (let i = 0; i < ranges.length; i++) {
+      if (totalWeight > ranges[i][0]) {
+        return ranges[i][1];
       }
-      return 0;
+    }
+    return 0;
+  }
+
+  // Calculate total price for given quantity
+  function calculateTotal(cost, weightPerMeter, quantity) {
+    const totalWeight = quantity * weightPerMeter;
+    const basicCost = cost * quantity;
+    const shipping = getShipping(totalWeight);
+
+    // Calculate profit based on quantity logic
+    let profit = 0;
+    if (quantity <= 10) {
+      profit = baseProfits[quantity - 1] || 0;
+    } else {
+      profit = 410 + (quantity - 10) * 5;
     }
 
-    // Calculate total price for given quantity
-    function calculateTotal(cost, weightPerMeter, quantity) {
-      const totalWeight = quantity * weightPerMeter;
-      const basicCost = cost * quantity;
-      const shipping = getShipping(totalWeight);
+    const subtotal = basicCost + profit + shipping;
+    const gst = subtotal * 0.05;
+    const total = subtotal + gst;
+    const pricePerMeter = Math.ceil(total / quantity);
 
-      // Calculate profit based on quantity logic
-      let profit = 0;
-      if (quantity <= 10) {
-        profit = baseProfits[quantity - 1] || 0;
-      } else {
-        profit = 410 + (quantity - 10) * 5;
-      }
+    return {
+      total: total.toFixed(2),
+      pricePerMeter: pricePerMeter,
+      resultText: pricePerMeter + " ₹ per meter for " + quantity + " meter"
+    };
+  }
 
-      const subtotal = basicCost + profit + shipping;
-      const gst = subtotal * 0.05;
-      const total = subtotal + gst;
-      const pricePerMeter = Math.ceil(total / quantity);
+  function calculateShipping() {
+    const quantityInput = document.getElementById("quantity");
+    const quantity = parseInt(quantityInput.value);
 
-      return {
-        total: total.toFixed(2),
-        pricePerMeter: pricePerMeter,
-        resultText: pricePerMeter + " ₹ per meter for " + quantity + " meter"
-      };
+    if (!quantity || quantity < min_qty) {
+      alert(`Please enter quantity greater than or equal to ${min_qty}`);
+      return;
     }
 
-    function calculateShipping() {
-      const quantityInput = document.getElementById("quantity");
-      const quantity = parseInt(quantityInput.value);
-
-      if (!quantity || quantity < min_qty) {
-        alert(`Please enter quantity greater than or equal to ${min_qty}`);
-        return;
-      }
-
-      if (quantity > stock) {
-        alert(`Quantity exceeds stock available (${stock} meters)`);
-        return;
-      }
-
-      const resultDiv = document.getElementById("result");
-      const { resultText } = calculateTotal(cost_per_item, weight_per_meter, quantity);
-      resultDiv.innerHTML = "<p>" + resultText + "</p>";
+    if (quantity > stock) {
+      alert(`Quantity exceeds stock available (${stock} meters)`);
+      return;
     }
 
-    document.getElementById("result").innerHTML = 
-                <strong style='font-size: 18px;'>${calc.resultText}</strong><br>
-                <strong style='font-size: 18px;'>Final Total: ₹${calc.total}</strong><br><br>
-                <input type='text' id='copyText' value='${calc.resultText} | Final Total: ₹${calc.total}' readonly
-                    style='width: 100%; font-weight: bold; text-align: center; padding: 5px;'><br><br>
-                <a href="https://amrutdresses.github.io/upi-payment-page/qrfixindex.html?amount=${calc.total}" 
-                   target="_blank" 
-                   style="display:inline-block; background-color:#4CAF50; color:white; padding:10px 20px; text-decoration:none; border-radius:5px; font-weight:bold;">
-                   Pay Now via UPI
-                </a>
-            ;
-        }
+    const resultDiv = document.getElementById("result");
+    const calc = calculateTotal(cost_per_item, weight_per_meter, quantity);
+
+    resultDiv.innerHTML = `
+      <strong style='font-size: 18px;'>${calc.resultText}</strong><br>
+      <strong style='font-size: 18px;'>Final Total: ₹${calc.total}</strong><br><br>
+      <input type='text' id='copyText' value='${calc.resultText} | Final Total: ₹${calc.total}' readonly
+        style='width: 100%; font-weight: bold; text-align: center; padding: 5px;'><br><br>
+      <a href="https://amrutdresses.github.io/upi-payment-page/qrfixindex.html?amount=${calc.total}" 
+         target="_blank" 
+         style="display:inline-block; background-color:#4CAF50; color:white; padding:10px 20px; text-decoration:none; border-radius:5px; font-weight:bold;">
+         Pay Now via UPI
+      </a>
+    `;
+  }
+
+  document.getElementById("calculateBtn").addEventListener("click", calculateShipping);
+</script>
 
 </body>
 </html>
